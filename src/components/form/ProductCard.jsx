@@ -1,6 +1,6 @@
 import noImg from "../../assets/noImg.svg";
-import { BtnDelete } from "../ui/BotaoDeletar";
 import { CategoryProduct } from "../ui/CategorySpan";
+import { BtnDelete } from "../ui/BotaoDeletar";
 
 export default function ProductCard({
   prodId,
