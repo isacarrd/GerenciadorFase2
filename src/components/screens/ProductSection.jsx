@@ -1,3 +1,6 @@
+import createElementIco from "../../assets/create.svg";
+import RenderApi from "../api/RenderApi";
+
 export default function ProductSection() {
   return (
     <section className="w-full flex flex-col gap-3 lg:gap-10">
@@ -11,7 +14,9 @@ export default function ProductSection() {
             className="w-fit flex flex-row flex-wrap gap-3 lg:gap-2 items-center"
           >
             {/* botão de selecionar a categoria */}
-            <button>Selecionar categoria</button>
+            <button className="cursor-pointer font-inter font-medium text-[10px] lg:text-sm border-2 border-(--marrom) bg-(--marrom) rounded-[5px] p-3 text-(--branco) hover:bg-(--branco) hover:text-(--marrom)">
+              Selecionar categoria
+            </button>
           </div>
         </div>
         {/* Lógica de criar produto */}
@@ -31,8 +36,9 @@ export default function ProductSection() {
         id="products"
         className="w-full h-fit flex flex-col flex-wrap items-center justify-center gap-4 md:flex-row lg:gap-y-10.5"
       >
-        {/* Lógica de renderização */}
+        {/* Lógica de renderização dos produtos */}
         {/* Abas de modais também vão aqui */}
+        <RenderApi />
       </div>
     </section>
   );
