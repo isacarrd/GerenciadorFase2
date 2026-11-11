@@ -1,43 +1,31 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { allProducts } from "../../data/allProducts";
+import useFetch from "../../hooks/useFetch";
 import ProductCard from "../form/ProductCard";
 
 export default function RenderApi() {
-  const [products, setProducts] = useState([]); // vai retornar todos os produtos
-  const [loading, setLoading] = useState(true);
-
-  let api = "https://dummyjson.com/products?limit=6"; // url base
+  const { data, loading, error } = useFetch("/products?limit=6");
 
   useEffect(() => {
-    axios
-      .get(api)
-      .then((res) => {
-        setProducts(res.data.products); // res.data -> objeto -- res.data.products -> array de produtos
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      });
-  }, [api]);
+    if (data) allProducts(data.products);
+  }, [data]);
+
+  if (loading) return <span className="py-5 font-inter text-(--preto) text-sm lg:text-xl text-center w-full">Carregando</span>;
+  if (error) return <span className="py-5 font-inter text-(--error) text-sm lg:text-xl text-center w-full">Erro ao carregar os produtos</span>;
 
   return (
     <>
-      {loading ? (
-        <span>Carregando</span>
-      ) : (
-        products.map((prod) => (
-          <ProductCard
-            key={prod.id}
-            prodId={prod.id}
-            prodImg={prod.thumbnail}
-            prodName={prod.title}
-            prodDesc={prod.description}
-            prodCateg={prod.tags}
-            prodStock={prod.stock}
-          />
-        ))
-      )}
+      {data.products.map((prod) => (
+        <ProductCard
+          key={prod.id}
+          prodId={prod.id}
+          prodImg={prod.thumbnail}
+          prodName={prod.title}
+          prodDesc={prod.description}
+          prodCateg={prod.tags}
+          prodStock={prod.stock}
+        />
+      ))}
     </>
   );
 }
