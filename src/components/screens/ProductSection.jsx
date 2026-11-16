@@ -1,7 +1,7 @@
 import createElementIco from "../../assets/create.svg";
 import RenderApi from "../api/RenderApi";
 
-export default function ProductSection() {
+export default function ProductSection({ term }) {
   return (
     <section className="w-full flex flex-col gap-3 lg:gap-10">
       <div className="w-full flex flex-row items-center justify-between">
@@ -38,7 +38,7 @@ export default function ProductSection() {
       >
         {/* Lógica de renderização dos produtos */}
         {/* Abas de modais também vão aqui */}
-        <RenderApi />
+        <RenderApi term={term} />
       </div>
     </section>
   );
