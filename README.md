@@ -21,6 +21,33 @@ O objetivo principal desta fase é testar e consolidar os conhecimentos em requi
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) 
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
+<br>
+
+## 🚦 Hooks explicados
+
+**useDebounce**: devolve uma cópia atrasada de um valor. Essa cópia só muda depois que o valor original fica delay milissegundos sem mudar. Ele não sabe nada de API nem de requisição. Digitando "iph" com uma tecla a cada 100ms:
+```bash
+0 ms     term = "i"     → timer agendado
+100 ms   term = "ip"    → timer anterior cancelado, novo agendado
+200 ms   term = "iph"   → timer anterior cancelado, novo agendado
+700 ms   (sem digitar)  → debounced vira "iph"
+```
+<br>
+
+**useProducts(term)**: executa a busca na API sempre que o term recebido muda e expõe o resultado em três estados: products, loading e error. Ele não faz debounce. Usa o term que recebe, e o debounce é aplicado antes, no RenderApi, quando você passa o debouncedTerm.
+<br>
+
+**Como os dois trabalham juntos:**
+
+```markdown
+digita → term (imediato) → useDebounce → debouncedTerm (após 500 ms parado)
+                                              ↓
+                                   useProducts dispara o effect
+                                              ↓
+                          findProducts → API → products / loading / error
+                                              ↓
+                                   RenderApi redesenha a lista
+```
 ---
 <br>
 
