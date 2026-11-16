@@ -1,15 +1,10 @@
-import { useState } from "react";
 import searchLupa from "../../assets/search.svg";
 
 import { ClearCamp } from "../ui/BotaoDeletar";
 
-export default function SearchSection() {
-  const [texto, setTexto] = useState("");
-
-  const limpaTexto = () => {
-    setTexto("");
-  };
-
+export default function SearchSection({ texto, setTexto }) {
+  const limpaTexto = () => setTexto("");
+  
   return (
     <section className="flex justify-center flex-row px-6 lg:px-25">
       <div
@@ -39,7 +34,6 @@ export default function SearchSection() {
           value={texto}
           onChange={(e) => {
             setTexto(e.target.value);
-            console.log(e.target.value)
           }}
           className="
               w-full
