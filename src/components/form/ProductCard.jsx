@@ -1,4 +1,6 @@
 import noImg from "../../assets/noImg.svg";
+import editAllowed from "../../assets/edit.svg";
+import noEditAllowed from "../../assets/noEditAllowed.svg";
 import { CategoryProduct } from "../ui/CategorySpan";
 import { BtnDelete } from "../ui/BotaoDeletar";
 
@@ -29,6 +31,16 @@ export default function ProductCard({
               {prodName}
             </h3>
             {/* Aqui fica o botão + img para o modal de editar produto */}
+            <button
+              className="editarProduto cursor-pointer"
+              onClick={() => console.log("Qué editar")}
+            >
+              <img
+                src={editAllowed}
+                alt="Editar Produto"
+                className="w-6 h-6 lg:w-12 lg:h-12"
+              />
+            </button>
           </div>
           <div className="flex flex-col w-full gap-3 lg:gap-6 items-start">
             <div className="descricao w-full">
@@ -73,6 +85,13 @@ export default function ProductCard({
               {prodName}
             </h3>
             {/* Aqui fica o botão + img para o modal de editar produto */}
+            <button className="editarProduto cursor-not-allowed" disabled>
+              <img
+                src={noEditAllowed}
+                alt="Editar Produto"
+                className="w-6 h-6 lg:w-12 lg:h-12"
+              />
+            </button>
           </div>
           <div className="flex flex-col w-full gap-3 lg:gap-6 items-start">
             <div className="descricao w-full">
