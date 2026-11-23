@@ -13,13 +13,19 @@ export const searchProducts = (q, signal) =>
   api.get("/products/search", { params: { q }, signal }); // o axios já faz o encodeURIComponent
 
 // a lista de categorias não muda, então busca uma vez e guarda
-let categoriesCache = null;
-export const getCategories = async (signal) => {
-  if (!categoriesCache) {
-    const res = await api.get("/products/category-list", { signal });
-    categoriesCache = res.data;
+let categoriesPromise = null;
+
+export const getCategories = () => {
+  if (!categoriesPromise) {
+    categoriesPromise = api
+      .get("/products/category-list")
+      .then((res) => res.data)
+      .catch((err) => {
+        categoriesPromise = null; // permite tentar de novo se falhar
+        throw err;
+      });
   }
-  return categoriesCache;
+  return categoriesPromise;
 };
 
 // o equivalente ao buscandoDados: decide qual endpoint usar
