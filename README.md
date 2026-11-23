@@ -48,7 +48,14 @@ digita → term (imediato) → useDebounce → debouncedTerm (após 500 ms parad
                                               ↓
                                    RenderApi redesenha a lista
 ```
+<br>
+
+**useCategories**: devolve todas as categorias através do useEffect + getCategories do productService (resposta da API).
+
+<br>
+
 ---
+
 <br>
 
 ⬅️ **[Voltar para a Visão Geral e Testes](https://github.com/isacarrd/gereciadorTeste/tree/main)**
