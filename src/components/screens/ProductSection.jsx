@@ -1,7 +1,15 @@
+import { useState } from "react";
 import createElementIco from "../../assets/create.svg";
 import RenderApi from "../api/RenderApi";
+import CreateProduct from "../form/CreateProduct";
 
 export default function ProductSection({ term }) {
+  const [modalCreate, setModalCreate] = useState(null);
+
+  const handleCloseCreate = () => {
+    setModalCreate(null)
+  }
+
   return (
     <section className="w-full flex flex-col gap-3 lg:gap-10">
       <div className="w-full flex flex-row items-center justify-between">
@@ -23,7 +31,7 @@ export default function ProductSection({ term }) {
         <button
           id="createProduct"
           className="w-fit h-fit font-inter text-(--branco) bg-(--marrom) rounded-full px-3 py-3 lg:px-6 lg:py-6 cursor-pointer"
-          onClick={() => console.log("Clicou pra criar produto")}
+          onClick={() => setModalCreate(true)}
         >
           <img
             src={createElementIco}
@@ -39,6 +47,9 @@ export default function ProductSection({ term }) {
         {/* Lógica de renderização dos produtos */}
         {/* Abas de modais também vão aqui */}
         <RenderApi term={term} />
+        {modalCreate && (
+          <CreateProduct isOpen={true} onClose={handleCloseCreate} />
+        )}
       </div>
     </section>
   );
