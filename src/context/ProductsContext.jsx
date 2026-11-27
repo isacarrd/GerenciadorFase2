@@ -2,9 +2,9 @@
 
 
 import { createContext, useContext, useState } from "react";
-import { createProduct } from "../services/productService";
+import { createProduct, updateProduct } from "../services/productService";
 
-/* Apenas o ADD (create) por enquanto! */
+/* Apenas o ADD (create) e PUT (update) por enquanto! */
 
 /* O Context é uma área de estado compartilhado: qualquer componente dentro do Provider pode ler e usar o que está lá, sem passar props por vários níveis. Ele tem três peças que estão enumeradas no código. */
 
@@ -12,6 +12,7 @@ const ProductsContext = createContext(null); // 1. o "canal"
 
 export function ProductsProvider({ children }) { // 2. quem guarda e publica
   const [created, setCreated] = useState([]);
+  const [updated, setUpdated] = useState([])
 
   const addProduct = async (data) => {
     // a imagem (data URL) fica só no app e não vai para a API
@@ -31,8 +32,22 @@ export function ProductsProvider({ children }) { // 2. quem guarda e publica
     ]);
   };
 
+  const editProduct = async (product, data) => {
+    const { thumbnail, ...payload } = data; // a imagem não vai para a API
+
+    // produto criado aqui não existe na API (daria 404): só atualiza localmente
+    if (!product.local) {
+      await updateProduct(product.id, payload);
+    }
+
+    setUpdated((prev) => ({
+      ...prev,
+      [product.id]: { ...prev[product.id], ...data },
+    }));
+  }
+
   return (
-    <ProductsContext.Provider value={{ created, addProduct }}>
+    <ProductsContext.Provider value={{ created, updated,addProduct, editProduct }}>
       {children}
     </ProductsContext.Provider>
   );
