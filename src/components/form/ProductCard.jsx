@@ -1,10 +1,13 @@
-import noImg from "../../assets/noImg.svg";
+import { useState } from "react";
 import editAllowed from "../../assets/edit.svg";
 import noEditAllowed from "../../assets/noEditAllowed.svg";
-import { CategoryProduct } from "../ui/CategorySpan";
+import noImg from "../../assets/noImg.svg";
 import { BtnDelete } from "../ui/BotaoDeletar";
+import { CategoryProduct } from "../ui/CategorySpan";
+import EditProduct from "./EditProduct";
 
 export default function ProductCard({
+  product,
   prodId,
   prodName,
   prodImg = "",
@@ -12,6 +15,12 @@ export default function ProductCard({
   prodCateg,
   prodStock,
 }) {
+  const [editModal, setEditModal] = useState(null);
+
+  const handleClose = () => {
+    setEditModal(null);
+  };
+
   if (prodStock > 0) {
     return (
       <div
@@ -33,7 +42,7 @@ export default function ProductCard({
             {/* Aqui fica o botão + img para o modal de editar produto */}
             <button
               className="editarProduto cursor-pointer"
-              onClick={() => console.log("Qué editar")}
+              onClick={() => setEditModal(true)}
             >
               <img
                 src={editAllowed}
@@ -64,6 +73,9 @@ export default function ProductCard({
           </div>
         </div>
         {/* Modal de editar produto {} */}
+        {editModal && (
+          <EditProduct isOpen={true} onClose={handleClose} product={product} />
+        )}
       </div>
     );
   } else {
@@ -114,7 +126,6 @@ export default function ProductCard({
             <BtnDelete onDelete={() => console.log("Apertou para deletar")} />
           </div>
         </div>
-        {/* Modal de editar produto {} */}
       </div>
     );
   }
