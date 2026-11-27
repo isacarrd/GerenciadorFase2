@@ -4,22 +4,28 @@ import useProducts from "../../hooks/useProducts";
 import ProductCard from "../form/ProductCard";
 
 export default function RenderApi({ term = "" }) {
-  const { created } = useLocalProducts();
+  const { created, updated } = useLocalProducts();
   const debouncedTerm = useDebounce(term, 500);
   const { products, loading, error } = useProducts(debouncedTerm);
+  
+  // aplica as edições por cima do produto original
+  const withEdits = (p) => ({ ...p, ...updated[p.id] });
 
   // os criados também respondem à busca (ID, nome ou categoria)
   const q = debouncedTerm.trim().toLowerCase();
-  const createdMatch = created.filter(
-    // existe porque a busca da API não conhece os produtos locais
-    (p) =>
-      !q ||
-      String(p.id) === q ||
-      p.title.toLowerCase().includes(q) ||
-      p.tags.some((t) => t.toLowerCase().includes(q))
-  );
+  
+  const createdMatch = created
+    .map(withEdits) // edita antes de filtrar, para a busca enxergar o nome novo
+    .filter(
+      // existe porque a busca da API não conhece os produtos locais
+      (p) =>
+        !q ||
+        String(p.id) === q ||
+        p.title.toLowerCase().includes(q) ||
+        p.tags.some((t) => t.toLowerCase().includes(q))
+    );
 
-  const list = [...products, ...createdMatch];
+  const list = [...products.map(withEdits), ...createdMatch];
 
   /*   
   PARA TESTE
@@ -34,6 +40,7 @@ export default function RenderApi({ term = "" }) {
     products.length
   );
  */
+  
   return (
     <>
       {loading && (
@@ -57,6 +64,7 @@ export default function RenderApi({ term = "" }) {
         list.map((prod) => (
           <ProductCard
             key={prod.id}
+            product={prod}
             prodId={prod.id}
             prodImg={prod.thumbnail}
             prodName={prod.title}
